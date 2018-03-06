@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.entities.User;
 import utils.MessagingUtils;
 
 import javax.sound.sampled.Line;
+import java.util.List;
 
 public class MatchThread implements Runnable{
 
@@ -28,9 +29,11 @@ public class MatchThread implements Runnable{
     public void run() {
         LineupListener lineupListener = new LineupListener(player1, player2, this);
         handleListener(lineupListener);
+        List<String> lineupPlayer1 = lineupListener.getLineupAsList(player1);
+        List<String> lineupPlayer2 = lineupListener.getLineupAsList(player2);
         MessagingUtils.sendPrivateMessage(player1,lineupListener.getLineupFor(player2));
         MessagingUtils.sendPrivateMessage(player2,lineupListener.getLineupFor(player1));
-        MatchListener banListener = new BanListener(player1,player2,this);
+        MatchListener banListener = new BanListener(player1,player2,this,lineupPlayer1,lineupPlayer2);
         handleListener(banListener);
     }
 

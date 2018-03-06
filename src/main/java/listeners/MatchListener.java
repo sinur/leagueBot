@@ -2,6 +2,7 @@ package listeners;
 
 import core.MatchThread;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -35,7 +36,7 @@ public abstract class MatchListener extends ListenerAdapter{
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
          if (shouldAnswerPlayer(event,player1) || shouldAnswerPlayer(event,player2)) {
             String input = event.getMessage().getContentRaw();
-            if(isInputValid(input)){
+            if(isInputValid(event.getMessage())){
                 playerInputs.put(event.getAuthor(),input);
                 MessagingUtils.sendPrivateMessage(event.getAuthor(),"Thanks :D");
             }else {
@@ -55,7 +56,7 @@ public abstract class MatchListener extends ListenerAdapter{
 
     protected abstract String getMessageInvalidString();
 
-    protected abstract boolean isInputValid(String contentRaw);
+    protected abstract boolean isInputValid(Message message);
 
     public abstract String getAnnouncementString();
 }

@@ -1,6 +1,7 @@
 package listeners;
 
 import core.MatchThread;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
 import java.util.ArrayList;
@@ -9,11 +10,11 @@ import java.util.List;
 
 public class LineupListener extends MatchListener{
 
-    String[] nilfgaard = {"emhyr","morvran","usurper","calveit","jan"};
-    String[] skellige = {"bran","harald","crach","eist"};
-    String[] monsters = {"hillock","arachas queen","elder","eredin","dagon","aq"};
-    String[] northernRealms = {"foltest","radovid","henselt","adda"};
-    String[] scoiatael = {"brouver","eithne","francesca","filavandrel", "fran", "fila"};
+    String[] nilfgaard = {"emhyr","morvran","usurper","calveit","jan","jan calveit","emhyr var emreis","morvran voorhis","voorhis"};
+    String[] skellige = {"bran","harald","crach","eist","king bran","bran tuirseach","crach an craite","eist tuirseach","harald the cripple","cripple"};
+    String[] monsters = {"hillock","arachas queen","elder","eredin","dagon","aq","whispering hillock","unseen elder","unseen","eredin breacc glass","eredin bréacc glas"};
+    String[] northernRealms = {"foltest","radovid","henselt","adda","king foltest","rado","raddy","king radovid v","king henselt","princess adda"};
+    String[] scoiatael = {"brouver","eithne","francesca","filavandrel", "fran", "fila","brouver hoog","francesca findabair","eithné"};
     List<String[]> factions;
 
     public LineupListener(User player1, User player2, MatchThread matchThread) {
@@ -37,9 +38,8 @@ public class LineupListener extends MatchListener{
     }
 
     @Override
-    protected boolean isInputValid(String contentRaw) {
-        contentRaw = contentRaw.trim();
-        List<String> leaders = Arrays.asList(contentRaw.split(","));
+    protected boolean isInputValid(Message message) {
+        List<String> leaders = parseLineupString(message.getContentRaw());
         if(leaders.size()!=4){
             return false;
         }
@@ -56,6 +56,11 @@ public class LineupListener extends MatchListener{
         return differentFactions==4;
     }
 
+    private List<String> parseLineupString(String contentRaw) {
+        contentRaw = contentRaw.trim();
+        return Arrays.asList(contentRaw.split(","));
+    }
+
     @Override
     public String getAnnouncementString(){
         return getLineupAnnouncement(player1)+"\n"+
@@ -66,8 +71,13 @@ public class LineupListener extends MatchListener{
         return "Your opponents leaders: "+ playerInputs.get(user);
     }
 
+    public List<String> getLineupAsList(User user){
+        return parseLineupString(playerInputs.get(user));
+    }
+
     private String getLineupAnnouncement(User player){
         return "Leaders for " + player.getAsMention() + ": " + playerInputs.get(player);
     }
+
 
 }
