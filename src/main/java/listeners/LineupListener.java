@@ -12,7 +12,7 @@ public class LineupListener extends MatchListener{
 
     String[] nilfgaard = {"emhyr","morvran","usurper","calveit","jan","jan calveit","emhyr var emreis","morvran voorhis","voorhis"};
     String[] skellige = {"bran","harald","crach","eist","king bran","bran tuirseach","crach an craite","eist tuirseach","harald the cripple","cripple"};
-    String[] monsters = {"hillock","arachas queen","elder","eredin","dagon","aq","whispering hillock","unseen elder","unseen","eredin breacc glass","eredin bréacc glas"};
+    String[] monsters = {"hillock","arachas queen","elder","eredin","dagon","arachas","queen","aq","whispering hillock","unseen elder","unseen","eredin breacc glass","eredin bréacc glas"};
     String[] northernRealms = {"foltest","radovid","henselt","adda","king foltest","rado","raddy","king radovid v","king henselt","princess adda"};
     String[] scoiatael = {"brouver","eithne","francesca","filavandrel", "fran", "fila","brouver hoog","francesca findabair","eithné"};
     List<String[]> factions;
