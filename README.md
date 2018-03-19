@@ -6,4 +6,4 @@ To use it, first set up a discord bot account. You can learn how to set that up 
 
 After you created the bot and got your token, start up the bot with via command line interface with
 
-java -jar leagueBot.jar yourToken
+```java -jar leagueBot.jar yourToken```
