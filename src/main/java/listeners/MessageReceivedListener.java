@@ -16,7 +16,7 @@ public class MessageReceivedListener extends ListenerAdapter {
             String content = event.getMessage().getContentRaw();
             try {
                 if (content.startsWith("!start")) {
-                    String[] players = content.split(" ");
+                    String[] players = content.split(" +");
                     players[1] = players[1].replace("<@", "");
                     players[1] = players[1].replace(">", "");
                     players[1] = players[1].replace("!", "");
