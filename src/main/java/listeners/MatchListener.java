@@ -18,6 +18,7 @@ public abstract class MatchListener extends ListenerAdapter{
     protected final User player2;
     private final MatchThread matchThread;
     protected Map<User,String> playerInputs = new HashMap<>();
+    private boolean gotInputs = false;
 
     public MatchListener(User player1, User player2, MatchThread matchThread) {
         this.player1 = player1;
@@ -45,6 +46,7 @@ public abstract class MatchListener extends ListenerAdapter{
         }
         if(playerInputs.get(player1)!=null && playerInputs.get(player2)!=null) {
             synchronized (matchThread){
+                gotInputs=true;
                 matchThread.notifyAll();
             }
         }
@@ -59,4 +61,8 @@ public abstract class MatchListener extends ListenerAdapter{
     protected abstract boolean isInputValid(Message message);
 
     public abstract String getAnnouncementString();
+
+    public boolean hasGottenInputs() {
+        return gotInputs;
+    }
 }

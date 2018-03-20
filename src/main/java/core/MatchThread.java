@@ -28,26 +28,33 @@ public class MatchThread implements Runnable{
     @Override
     public void run() {
         LineupListener lineupListener = new LineupListener(player1, player2, this);
-        handleListener(lineupListener);
-        List<String> lineupPlayer1 = lineupListener.getLineupAsList(player1);
-        List<String> lineupPlayer2 = lineupListener.getLineupAsList(player2);
-        MessagingUtils.sendPrivateMessage(player1,lineupListener.getLineupFor(player2));
-        MessagingUtils.sendPrivateMessage(player2,lineupListener.getLineupFor(player1));
-        MatchListener banListener = new BanListener(player1,player2,this,lineupPlayer1,lineupPlayer2);
-        handleListener(banListener);
+        if (handleListener(lineupListener)) {
+            List<String> lineupPlayer1 = lineupListener.getLineupAsList(player1);
+            List<String> lineupPlayer2 = lineupListener.getLineupAsList(player2);
+            MessagingUtils.sendPrivateMessage(player1, lineupListener.getLineupFor(player2));
+            MessagingUtils.sendPrivateMessage(player2, lineupListener.getLineupFor(player1));
+            MatchListener banListener = new BanListener(player1, player2, this, lineupPlayer1, lineupPlayer2);
+            handleListener(banListener);
+        }
     }
 
-    private void handleListener(MatchListener lineupListener) {
+    private boolean handleListener(MatchListener lineupListener) {
         jda.addEventListener(lineupListener);
         try {
             synchronized (this){
-                wait();
+                wait(900000); //15 minutes
+                if(lineupListener.hasGottenInputs()){
+                    mainChannel.sendMessage(lineupListener.getAnnouncementString()).queue();
+                    return true;
+                }
+                return false;
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
+            return false;
+        }finally{
+            jda.removeEventListener(lineupListener);
         }
-        mainChannel.sendMessage(lineupListener.getAnnouncementString()).queue();
-        jda.removeEventListener(lineupListener);
     }
 
 }
